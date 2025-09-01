@@ -66,4 +66,8 @@ export class CartComponent {
   newFeature () {
     alert("This is a new feature");
   }
+
+  sellerFeature() {
+    alert("This is a seller feature");
+  }
 }
