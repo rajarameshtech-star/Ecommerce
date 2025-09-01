@@ -62,4 +62,8 @@ export class CartComponent {
       }
     });
   }
+
+  newFeature () {
+    alert("This is a new feature");
+  }
 }
