@@ -1,0 +1,18 @@
+footer {
+    background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+}
+
+h5 {
+    color: white !important;
+}
+
+a {
+    color: white !important;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: var(--accent-color) !important;
+    text-decoration: underline;
+}

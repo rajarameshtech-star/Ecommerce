@@ -1,0 +1,53 @@
+<div class="container mt-5">
+  <h2 class="mb-4">Products</h2>
+
+  <!-- Search and Filter Form -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <form (ngSubmit)="onSearch()" class="row g-3 align-items-center">
+        <div class="col-md-5">
+          <input type="text" class="form-control" placeholder="Search for products..." [(ngModel)]="searchString" name="searchString">
+        </div>
+        <div class="col-md-2">
+          <input type="number" class="form-control" placeholder="Min Price" [(ngModel)]="minPrice" name="minPrice">
+        </div>
+        <div class="col-md-2">
+          <input type="number" class="form-control" placeholder="Max Price" [(ngModel)]="maxPrice" name="maxPrice">
+        </div>
+        <div class="col-md-3">
+          <button type="submit" class="btn btn-primary w-100">Search</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Product Grid -->
+  <div class="row">
+    @for (product of products; track product.id) {
+      <div class="col-md-4 mb-4">
+        <app-product [product]="product"></app-product>
+      </div>
+    } @empty {
+      <div class="col-12">
+        <p>No products found.</p>
+      </div>
+    }
+  </div>
+
+  <!-- Pagination -->
+  <div class="d-flex justify-content-center mt-4">
+    <nav>
+      <ul class="pagination">
+        <li class="page-item" [class.disabled]="pageNumber === 1">
+          <button class="page-link" (click)="previousPage()">Previous</button>
+        </li>
+        <li class="page-item active">
+          <span class="page-link">{{ pageNumber }}</span>
+        </li>
+        <li class="page-item" [class.disabled]="!hasNextPage">
+          <button class="page-link" (click)="nextPage()">Next</button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

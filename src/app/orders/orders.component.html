@@ -1,0 +1,125 @@
+<div class="row">
+  <div class="col-md-6">
+    <label for="end-date">End Date</label>
+    <input 
+        type="datetime-local" 
+        id="end-date" 
+        [(ngModel)]="startDate" 
+        class="form-control" 
+        placeholder="Select a date and time">
+  </div>
+
+  <div class="col-md-6">
+      <label for="end-date">End Date</label>
+      <input 
+          type="datetime-local" 
+          id="end-date" 
+          [(ngModel)]="endDate" 
+          class="form-control" 
+          placeholder="Select a date and time">
+  </div>
+  <div class="col-md-6">
+      <label for="seller-id">Seller ID</label>
+      <input 
+          type="text" 
+          id="seller-id" 
+          [(ngModel)]="sellerId" 
+          class="form-control" 
+          placeholder="Enter Seller ID">
+  </div>
+</div>
+<div class="row mt-3">
+  <div class="col-md-6">
+      <label for="order-status">Order Status</label>
+      <select 
+          id="order-status" 
+          [(ngModel)]="orderStatus" 
+          class="form-control">
+          <option value="">Select Status</option>
+          <option value="Pending">Pending</option>
+          <option value="Delivered">Delivered</option>
+          <option value="Shipped">Shipped</option>
+          <option value="OutforDelivery">Out for Delivery</option>
+      </select>
+  </div>
+  <div class="col-md-6">
+      <label for="payment-status">Payment Status</label>
+      <select 
+          id="payment-status" 
+          [(ngModel)]="paymentStatus" 
+          class="form-control">
+          <option value="">Select Status</option>
+          <option value="Paid">Paid</option>
+          <option value="Pending">Pending</option>
+      </select>
+  </div>
+</div>
+<div class="row mt-3">
+  <div class="col-md-6">
+      <label for="page-size">Page Size</label>
+      <input 
+          type="number" 
+          id="page-size" 
+          [(ngModel)]="pageSize" 
+          class="form-control" 
+          placeholder="Enter Page Size">
+  </div>
+  <div class="col-md-6">
+      <label for="page-number">Page Number</label>
+      <input 
+          type="number" 
+          id="page-number" 
+          [(ngModel)]="pageNumber" 
+          class="form-control" 
+          placeholder="Enter Page Number">
+  </div>
+</div>
+<div class="row mt-3">
+  <div class="col-md-12">
+      <button class="btn btn-primary w-100" (click)="getOrders()" >Get Orders</button>
+  </div>
+</div>
+
+<section class="container mt-4">
+    @if (loading) {
+      <div class="text-center">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p>Loading orders...</p>
+      </div>
+    } @else if (error) {
+      <div class="alert alert-danger">{{ error }}</div>
+    } @else if (orders.length === 0) {
+      <div class="alert alert-info">No orders found.</div>
+    } @else {
+      <div class="d-flex flex-column gap-3">
+        @for (order of orders; track order.id) {
+          <div class="card p-3 shadow-sm border-start border-primary border-4">
+            <div class="d-flex flex-column flex-md-row align-items-start gap-4">
+              <!-- Product Info -->
+              <div class="flex-grow-1">
+                <h5 class="mb-1 text-primary">{{ order.product.productTitle }}</h5>
+                <p class="mb-2 text-muted">{{ order.product.productDescription }}</p>
+  
+                <div class="mb-2">
+                  <strong>Price:</strong> ₹{{ order.product.price }}<br>
+                  <strong>Quantity Ordered:</strong> {{ order.quantity }}
+                </div>
+  
+                <div class="small text-secondary">
+                  <strong>Ordered On:</strong> {{ order.orderedDate | date: 'medium' }}<br>
+                  <strong>Expected Delivery:</strong> {{ order.expectedDeliveryBy | date: 'medium' }}
+                </div>
+              </div>
+  
+              <!-- Status Info -->
+              <div class="text-end ms-auto">
+                <span class="badge bg-secondary mb-2">Status: {{ order.status }}</span><br>
+                <span class="badge bg-info text-dark">Payment: {{ order.paymentStatus }}</span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </section>
+  

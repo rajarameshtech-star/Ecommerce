@@ -1,0 +1,56 @@
+
+<div class="container mt-5">
+    <h2>Your Cart</h2>
+    @if(cartItems() && cartItems().length > 0) {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for(item of cartItems();track $index) {
+                    <tr>
+                        <td>{{item.product.productTitle}}</td>
+                        <td>{{item.product.price | currency}}</td>
+                        <td>{{item.quantity}}</td>
+                        <td>{{item.quantity * item.product.price | currency}}</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" (click)="removeFromCart(item.id, item.product.id)">Remove</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table> 
+        <div class="row justify-content-end">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Cart Summary</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Subtotal
+                                <span>{{subtotal() | currency}}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Shipping
+                                <span>FREE</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <strong>Total</strong>
+                                <strong>{{subtotal() | currency}}</strong>
+                            </li>
+                        </ul>
+                        <button class="btn btn-primary w-100 mt-3" (click)="placeOrder()">Checkout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    } @else {
+        <p>Your cart is empty.</p>
+    }
+</div>
