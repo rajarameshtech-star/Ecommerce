@@ -58,7 +58,7 @@ export class CartComponent {
         // On error, revert the UI change
         console.error("Failed to remove item:", err);
         this.cartItems.set(originalItems);
-        alert("Could not remove item from cart. Please try again.");
+        alert("Could not remove item from cart. Please try again. ||||||||||");
       }
     });
   }
