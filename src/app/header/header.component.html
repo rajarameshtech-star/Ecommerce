@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+<!-- <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
   <div class="container-fluid">
     <a class="navbar-brand" routerLink="/">FunkyShop</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -41,3 +41,30 @@
     </div>
   </div>
 </nav>
+
+@if (userRole() == "User") {
+  <h1>User Logged In</h1>
+}
+
+@if (userRole() == "Seller") {
+  <h1>Seller Logged In</h1>
+} -->
+
+
+@if(loggedIn() && userRole()=="User") {
+  <app-user-heaader (logout)="logout()"></app-user-heaader>
+}
+@else if(loggedIn() && userRole()=="Seller") {
+  <app-seller-header (logout)="logout()"></app-seller-header>
+}
+@else {
+  <!-- <app-guest-header></app-guest-header> -->
+   <div><h1>FunkyShop</h1></div>
+   <ul>
+    <li >
+      <a [routerLink]="['login']">Login</a></li>
+    <li >
+      <a [routerLink]="['products']">Products</a>
+    </li>
+   </ul>
+}

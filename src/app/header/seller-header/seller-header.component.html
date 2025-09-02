@@ -1,0 +1,18 @@
+<ul>
+    <li>
+        <a [routerLink]="['seller', 'dashboard']">Dashboard</a>
+    </li>
+    <li>
+        <a [routerLink]="['seller', 'orders']">orders</a>
+    </li>
+    <li>
+        <a [routerLink]="['seller', 'products']">Product List</a>
+    </li>
+    <li>
+        <a [routerLink]="['seller', 'add-product']">Add Product</a>
+    </li>
+    <li>
+        <a (click)="onLogout()">
+        Logout</a>
+    </li>
+</ul>

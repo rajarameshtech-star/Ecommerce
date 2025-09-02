@@ -7,3 +7,8 @@ export const authGuard: CanActivateFn = (route, state) => {
   return userService.isAuthenticated();
 };
 
+export const noAuthGuard: CanActivateFn = (route, state) => {
+  let userService = inject(UsersService);
+  return !userService.isAuthenticated();
+}
+

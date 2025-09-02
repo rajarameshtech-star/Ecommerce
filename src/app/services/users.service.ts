@@ -9,6 +9,9 @@ import { loginDto, registerDto } from '../../models/user.models';
 export class UsersService {
 
   private _isAuthenticated = signal<boolean>(this.hasToken());
+  private _role = signal<string | null>(localStorage.getItem('role'));
+
+  userRole = this._role.asReadonly();
 
   isAuthenticated = this._isAuthenticated.asReadonly();
 
@@ -34,10 +37,12 @@ export class UsersService {
     );
   }
 
-  loginUser(loginDetails:loginDto):Observable<any> {
-    return this.http.post(this.apiUrl + "login", loginDetails, this.httpOptions ).pipe(
-      tap(response=>{
+  loginUser(loginDetails:loginDto):Observable<{success:boolean, expiresAt:string, jwt: string, roles : string[]}> {
+    return this.http.post<{success:boolean, expiresAt:string, jwt: string, roles : string[]}>(this.apiUrl + "login", loginDetails, this.httpOptions ).pipe(
+      tap(response => {
         console.log("User successfully logged in ", response);
+        this._role.set( response.roles[0] );
+        localStorage.setItem("role", response.roles[0]);
         this._isAuthenticated.set(true);
       })
     );
