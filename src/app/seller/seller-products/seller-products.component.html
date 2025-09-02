@@ -1,1 +1,23 @@
-<p>seller-products works!</p>
+<dialog [open]="editing" >
+    <input type="text" [value]="editingProduct()?.productTitle"> <br>
+    <input type="text" [value]="editingProduct()?.productDescription"> <br>
+    <input type="number" [value]="editingProduct()?.price">
+</dialog>
+
+<div>
+    <input type="text" [(ngModel)]="searchString" name="searchString">
+    <input type="number" [(ngModel)]="minPrice" name="minPrice">
+    <input type="text" [(ngModel)]="maxPrice" name="maxPrice">
+    <button (click)="loadProducts()">get products</button>
+</div>
+
+@for( product of products(); track $index) {
+    <app-product [product]="product" (edit)="editProduct($event)"></app-product>
+}
+
+<!-- pagination -->
+ <div>
+    <button [disabled]="pageNumber == 1" (click)="previousPage()">prev</button>
+    <span >{{pageNumber}}</span>
+    <button [disabled]="!hasNextPage" (click)="nextPage()">next</button>
+ </div>
