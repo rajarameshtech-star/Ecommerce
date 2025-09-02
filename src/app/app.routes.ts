@@ -7,23 +7,31 @@ import { ProductListComponent } from './product-list/product-list.component';
 import { ProductViewComponent } from './product-view/product-view.component';
 import { CartComponent } from './cart/cart.component';
 import { OrdersComponent } from './orders/orders.component';
-import { authGuard } from './guards/auth.guard';
+import { authGuard, noAuthGuard } from './guards/auth.guard';
+import { sellerGuard, userGuard } from './guards/role-guard.guard';
+import { registerAppScopedDispatcher } from '@angular/core/primitives/event-dispatch';
+import { SellerDashboardComponent } from './seller/seller-dashboard/seller-dashboard.component';
+import { SellerProductsComponent } from './seller/seller-products/seller-products.component';
+import { SellerOrdersComponent } from './seller/seller-orders/seller-orders.component';
 
 export const routes: Routes = [
     {
         path:"",
         component:ProductListComponent,
-        pathMatch:'full'
+        pathMatch:'full',
+        canActivate : [noAuthGuard]
     },
     {
         path:"register",
         component:RegistrationComponent,
-        pathMatch:'full'
+        pathMatch:'full',
+        canActivate : [noAuthGuard]
     },
     {
         path:"login",
         component:LoginComponent,
-        pathMatch:'full'
+        pathMatch:'full',
+        canActivate : [noAuthGuard]
     },
     {
         path:"products",
@@ -37,11 +45,26 @@ export const routes: Routes = [
     {
         path: "cart",
         component:CartComponent,
-        canActivate : [authGuard]
+        canActivate : [authGuard, userGuard],
     },
     {
         path: "previous-orders",
         component: OrdersComponent,
-        canActivate : [authGuard]
-    }
+        canActivate : [authGuard, userGuard]
+    },
+     {
+        path: "seller",
+        component: SellerDashboardComponent , // Change to SellerDashboardComponent when created
+        canActivate : [authGuard, sellerGuard],
+        children : [
+            {
+                path : "products",
+                component : SellerProductsComponent
+            },
+            {
+                path : "orders",
+                component : SellerOrdersComponent
+            }
+        ]
+     }
 ];
