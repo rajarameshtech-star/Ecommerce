@@ -22,7 +22,7 @@ export class CartService {
     // }
 
     effect(() => {
-      if (!this.userService.isAuthenticated()) {
+      if (!this.userService.isAuthenticated() || this.userService.userRole() == "Seller") {
         this.cartQtys.set(new Map<string, number>());
         return; // Exit early if the user is not authenticated
       }
