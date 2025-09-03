@@ -72,9 +72,5 @@ mat-icon {
 }
 
 mat-form-field {
-    margin:1rem auto;
-  }
-  
-  mat-select {
-    color: #3f51b5; /* Material primary color */
-  }
+    margin:0.5rem auto;
+}

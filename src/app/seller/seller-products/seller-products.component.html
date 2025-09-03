@@ -1,9 +1,19 @@
 <div>
-    <input type="text" [(ngModel)]="searchString" name="searchString">
-    <input type="number" [(ngModel)]="minPrice" name="minPrice">
-    <input type="text" [(ngModel)]="maxPrice" name="maxPrice">
-    <button (click)="loadProducts()">get products</button>
+<mat-form-field appearance="outline">
+    <mat-label>Search</mat-label>
+    <input matInput type="text" [(ngModel)]="searchString" name="searchString">
+</mat-form-field>
+<mat-form-field appearance="outline">
+    <mat-label>min price</mat-label>
+    <input matInput type="number" [(ngModel)]="minPrice" name="minPrice">
+</mat-form-field>
+<mat-form-field appearance="outline">
+    <mat-label>max price</mat-label>
+    <input matInput type="number" [(ngModel)]="maxPrice" name="maxPrice">
+</mat-form-field>
+<button mat-flat-button style="font-size: larger;" (click)="loadProducts()">get products</button>
 </div>
+
 
 <mat-form-field appearance="fill">
     <mat-label>View Mode</mat-label>
@@ -18,8 +28,9 @@
 <mat-checkbox [(ngModel)]="canSelectMultiple" (ngModelChange)="selectedIds.clear()"></mat-checkbox>
 <mat-label><mat-icon>list</mat-icon></mat-label>
 @if(canSelectMultiple && selectedIds.size > 0) {
-<button mat-button (click)="deleteSelectedProducts()"><mat-icon>delete</mat-icon></button>
+<button mat-flat-button (click)="deleteSelectedProducts()"><mat-icon>delete</mat-icon></button>
 }
+<hr/>
 <div [ngClass]="view">
     @for( product of products(); track $index) {
     <app-product [product]="product" (delete)="deleteProduct($event)" [selectable]="canSelectMultiple"
