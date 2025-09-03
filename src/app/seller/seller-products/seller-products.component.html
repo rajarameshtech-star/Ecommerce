@@ -5,13 +5,32 @@
     <button (click)="loadProducts()">get products</button>
 </div>
 
-@for( product of products(); track $index) {
-    <app-product [product]="product" (delete)="deleteProduct($event)" (edit)="editProduct($event)"></app-product>
+<mat-form-field appearance="fill">
+    <mat-label>View Mode</mat-label>
+    <mat-select [(ngModel)]="view">
+      <mat-option value="grid">Grid</mat-option>
+      <mat-option value="list">List</mat-option>
+      <mat-option value="thread">Thread</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
+<mat-checkbox [(ngModel)]="canSelectMultiple" (ngModelChange)="selectedIds.clear()"></mat-checkbox>
+<mat-label><mat-icon>list</mat-icon></mat-label>
+@if(canSelectMultiple && selectedIds.size > 0) {
+<button mat-button (click)="deleteSelectedProducts()"><mat-icon>delete</mat-icon></button>
 }
+<div [ngClass]="view">
+    @for( product of products(); track $index) {
+    <app-product [product]="product" (delete)="deleteProduct($event)" [selectable]="canSelectMultiple"
+        (edit)="editProduct($event)" (selected)="handleSelection($event)">
+    </app-product>
+    }
+</div>
 
 <!-- pagination -->
- <div>
+<div>
     <button [disabled]="pageNumber == 1" (click)="previousPage()">prev</button>
-    <span >{{pageNumber}}</span>
+    <span>{{pageNumber}}</span>
     <button [disabled]="!hasNextPage" (click)="nextPage()">next</button>
- </div>
+</div>

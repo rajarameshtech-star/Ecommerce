@@ -1,0 +1,80 @@
+app-product:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+
+
+.grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) ;
+    
+}
+
+.grid > app-product {
+    padding: 1.5rem;
+    border: 1px solid #ccc;
+    margin: 0.5rem;
+    border-radius: 5px;
+}
+
+.grid > app-product  {
+    flex-direction: column;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    justify-content:flex-start;
+    align-items: flex-start;
+    margin: auto auto;
+}
+
+.list {
+    width: 100%;
+}
+
+.list > app-product {
+    padding: 1.5rem;
+    border: 1px solid #ccc;
+    margin: 0.5rem;
+    border-radius: 5px;
+}
+
+.list > app-product {
+    width: 100%;
+}
+
+.list::ng-deep > app-product > div > h2,.list::ng-deep > app-product >div > p {
+    margin: 0;
+    display: inline-block;
+    padding-right: 1rem;
+}
+.list::ng-deep > app-product > div > h2 {
+    max-width: 300px;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.list::ng-deep > app-product > p {
+    font-size: 1rem;
+    color: #666;
+    margin-left: 1rem;
+}
+
+.list.list::ng-deep > app-product .select {
+    position: relative;
+    align-items: center;
+}
+
+mat-icon {
+    vertical-align: middle;
+}
+
+mat-form-field {
+    margin:1rem auto;
+  }
+  
+  mat-select {
+    color: #3f51b5; /* Material primary color */
+  }

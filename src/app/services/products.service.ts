@@ -1,8 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ProductDetails, ProductInfo } from '../../models/product.models';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { ProductEventsService } from '../shared/product-events.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { environment } from '../../environments/environment';
 export class ProductsService {
 
   api=environment.apiBaseUrl + "Products";
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient, private productEvents:ProductEventsService) { }
 
   getProducts(searchString?: string, minPrice?: number, maxPrice?: number, pageSize?: number, pageNumber?: number, sellerId?: string): Observable<ProductDetails[]> {
     let params = new HttpParams();
@@ -49,6 +50,22 @@ export class ProductsService {
   }
 
   addProduct(product:ProductDetails):Observable<any> {
-    return this.http.post(this.api,product,{responseType:"text" as "json"});
+    return this.http.post(this.api,product,{responseType:"text" as "json"}).pipe(
+      tap(()=> {
+        this.productEvents.triggerProductChangeEvent();
+      })
+    );
+  }
+
+  deleteMultipleProducts(ids:string[]) {
+    const options = {
+      body: ids,
+    };
+    return new Observable();
+    // return this.http.delete(this.api, options).pipe(
+    //   tap(() => {
+    //     this.productEvents.triggerProductChangeEvent();
+    //   })
+    // );
   }
 }

@@ -6,31 +6,50 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { ProductEventsService } from '../../shared/product-events.service';
+import { MatCheckbox, MatCheckboxModule } from "@angular/material/checkbox";
+import { MatFormField, MatInputModule } from "@angular/material/input";
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-seller-products',
   standalone: true,
-  imports: [CommonModule, ProductComponent, FormsModule, MatSnackBarModule],
+  imports: [
+    CommonModule, ProductComponent, FormsModule,
+    MatSnackBarModule, MatCheckboxModule,
+    MatInputModule,
+    MatIconModule, MatButtonModule, MatFormFieldModule, MatSelectModule
+],
   templateUrl: './seller-products.component.html',
   styleUrls: ['./seller-products.component.css']
 })
 export class SellerProductsComponent {
 
+  view = 'grid';
+  canSelectMultiple = false;
   searchString: string = '';
   minPrice: number | undefined = 0;
   maxPrice: number | undefined = 1000000;
   pageSize: number = 30;
   pageNumber: number = 1;
   hasNextPage: boolean = true;
+  selectedIds:Set<string> = new Set();
 
   products = signal<ProductDetails[]>([]);
   tempProduct!: ProductDetails;
 
-  constructor(private productsService : ProductsService, private route:ActivatedRoute,private router:Router, private snackBar:MatSnackBar) {
-    
-   }
+  constructor(private productsService: ProductsService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private productEvents: ProductEventsService
+  ) {
+  }
 
-   
+
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       this.searchString = params['search'] || '';
@@ -39,10 +58,14 @@ export class SellerProductsComponent {
       this.pageSize = +params['size'] || 30;
       this.pageNumber = +params['page'] || 1;
     });
+    this.productEvents.productsChanged.subscribe(() => {
+      this.loadProducts();
+    });
+
     this.loadProducts();
   }
 
-   editProduct(product: ProductDetails) {
+  editProduct(product: ProductDetails) {
     this.productsService.updateProduct(product).subscribe(() => {
       this.products.update((prods) => {
         this.tempProduct = prods.find(p => p.id === product.id)!;
@@ -52,7 +75,7 @@ export class SellerProductsComponent {
     });
 
     let snackRef = this.snackBar.open(
-      ''+product.productTitle+' updated successfully',
+      '' + product.productTitle + ' updated successfully',
       'undo',
       {
         duration: 3000,
@@ -68,7 +91,7 @@ export class SellerProductsComponent {
         })
       });
       var snackRef2 = this.snackBar.open(
-        ''+product.productTitle+' updated reverted successfully',
+        '' + product.productTitle + ' updated reverted successfully',
         'ok',
         {
           duration: 3000,
@@ -76,14 +99,14 @@ export class SellerProductsComponent {
           verticalPosition: 'bottom',
         }
       );
-      snackRef2.onAction().subscribe(()=>{
+      snackRef2.onAction().subscribe(() => {
         console.log("undone the update");
       });
     })
 
-   }
+  }
 
-   deleteProduct(productId:string) {
+  deleteProduct(productId: string) {
     this.tempProduct = this.products().find(p => p.id === productId)!;
     console.log("temp product", this.tempProduct);
     this.productsService.deleteProduct(productId).subscribe(() => {
@@ -104,7 +127,7 @@ export class SellerProductsComponent {
         this.products.update((prods) => [this.tempProduct, ...prods]);
       });
       var snackRef2 = this.snackBar.open(
-        ''+this.tempProduct.productTitle+' deletion reverted successfully',
+        '' + this.tempProduct.productTitle + ' deletion reverted successfully',
         'ok',
         {
           duration: 3000,
@@ -112,25 +135,25 @@ export class SellerProductsComponent {
           verticalPosition: 'bottom',
         }
       );
-      snackRef2.onAction().subscribe(()=>{
+      snackRef2.onAction().subscribe(() => {
         console.log("undone the delete");
       });
     })
-   }
+  }
 
-   nextPage() {
-    this.pageNumber +=1;
+  nextPage() {
+    this.pageNumber += 1;
     this.loadProducts();
-   }
+  }
 
-    previousPage() {
-      if (this.pageNumber > 1) {
-        this.pageNumber--;
-        this.loadProducts();
-      }
+  previousPage() {
+    if (this.pageNumber > 1) {
+      this.pageNumber--;
+      this.loadProducts();
     }
+  }
 
-   loadProducts() {
+  loadProducts() {
     this.router.navigate([], {
       queryParams: {
         search: this.searchString,
@@ -145,9 +168,29 @@ export class SellerProductsComponent {
       this.products.set(products);
       if (products.length < this.pageSize) {
         this.hasNextPage = false;
-      }else{
+      } else {
         this.hasNextPage = true;
       }
     });
-   }
+  }
+
+  handleSelection(selectedId:string){
+    this.selectedIds.has(selectedId) ? this.selectedIds.delete(selectedId) : this.selectedIds.add(selectedId);
+    console.log(this.selectedIds);
+  }
+
+  deleteSelectedProducts() {
+    if(this.selectedIds.size === 0) return;
+    let ids = Array.from(this.selectedIds);
+    // this.productsService.deleteMultipleProducts(ids).subscribe(() => {
+    //   this.products.update((prods) => prods.filter(prod => !this.selectedIds.has(prod.id)));
+    //   this.selectedIds.clear();
+    // });
+    this.selectedIds.clear();
+    this.snackBar.open("Deleted multiple products successfully", 'undo', {
+      duration: 3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+    })
+  }
 }

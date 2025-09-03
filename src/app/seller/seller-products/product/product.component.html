@@ -1,6 +1,17 @@
-<h2>{{product().productTitle}}</h2>
-<p>{{product().productDescription}}</p>
-<p>Price: {{product().price}}</p>
-<p>Quantity: {{product().quantity}}</p>
-<button mat-button color="primary" (click)="editProduct()">Edit</button>
-<button mat-button  (click)="deleteProduct()">Delete</button>
+<div class="details">
+    <h2>{{product().productTitle}}</h2>
+    <p>{{product().productDescription}}</p>
+</div>
+<div>
+    <span> <mat-icon class="price-icon">sell</mat-icon> $ {{product().price}}</span>
+    <span> <mat-icon class="inventory-icon">inventory</mat-icon> {{product().quantity}}</span>
+</div>
+<div class="actions">
+    <button mat-button color="primary" (click)="editProduct()" ><mat-icon class="edit-icon">edit</mat-icon>Edit</button>
+    <button mat-button  (click)="deleteProduct()"><mat-icon class="delete-icon">delete_outline</mat-icon>delete</button>
+    @if(selectable()) {
+        <mat-checkbox class="select" [(ngModel)]="isSelected" (change)="notifySelection()">
+            
+        </mat-checkbox>
+    }
+</div>

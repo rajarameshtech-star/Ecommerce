@@ -28,34 +28,7 @@ export class SellerDashboardComponent {
 
     dialogRef.afterClosed().subscribe(response => {
       if (response) {
-
-        this.productsService.addProduct(response).subscribe({
-          next: (res) => {
-            console.log(res);
-            let snackBarRef = this.snackBar.open("Product Added Successfully!", "Go to Products", {
-              duration: 5000,
-              verticalPosition: 'top',
-              horizontalPosition: 'center',
-              panelClass: ['snackbar-success']
-            });
-    
-            snackBarRef.onAction().subscribe(()=>{
-              
-              this.router.navigate(["seller", "products"]);
-            });
-          },
-          error: (err) => {
-            console.log(err);
-            let snackBarRef = this.snackBar.open("Error while adding Product!", "info", {
-              duration: 5000,
-              verticalPosition: 'top',
-              horizontalPosition: 'center',
-              panelClass: ['snackbar-success']
-            });
-          }
-        })
-
-        
+        console.log(response);
       }
     })
   }
