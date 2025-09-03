@@ -12,3 +12,17 @@ export const noAuthGuard: CanActivateFn = (route, state) => {
   return !userService.isAuthenticated();
 }
 
+export const timeoutGuard: CanActivateFn = (route, state) => {
+  const expiresAt = localStorage.getItem('expiresAt');
+  if (!expiresAt) return false;
+  let userService = inject(UsersService);
+
+  const isExpired = new Date(expiresAt).getTime() < Date.now();
+  if (isExpired) {
+    userService.logoutUser();
+    return false;
+  }
+
+  return true;
+}
+

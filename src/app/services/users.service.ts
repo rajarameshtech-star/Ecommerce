@@ -2,6 +2,9 @@ import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { loginDto, registerDto } from '../../models/user.models';
+import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
@@ -19,14 +22,14 @@ export class UsersService {
     return localStorage.getItem('jwt') !== null;
   }
 
-  private apiUrl = 'https://localhost:44394/api/Auth/';
+  private apiUrl = environment.apiBaseUrl + 'Auth/';
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
     })
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router:Router) {}
 
   registerUser(userData: registerDto): Observable<any> {
     return this.http.post(this.apiUrl + "register", userData, this.httpOptions).pipe(
@@ -42,8 +45,10 @@ export class UsersService {
       tap(response => {
         console.log("User successfully logged in ", response);
         this._role.set( response.roles[0] );
+        localStorage.setItem("expiresAt", response.expiresAt);
         localStorage.setItem("role", response.roles[0]);
         this._isAuthenticated.set(true);
+        this.checkTokenExpiry(response.expiresAt);
       })
     );
   }
@@ -53,6 +58,26 @@ export class UsersService {
     sessionStorage.clear();
     this._isAuthenticated.set(false);
     console.log("User logged out successfully");
+    this.router.navigate(['/login']);
+  }
+
+  checkTokenExpiry(expiresAt:string) {
+    // const expiresAt = localStorage.getItem('expiresAt');
+    if (!expiresAt) return;
+  
+    const expiryTime = new Date(expiresAt).getTime();
+    const currentTime = Date.now();
+    const timeout = expiryTime - currentTime;
+  
+    if (timeout <= 0) {
+      alert("Session TimedOut, Logged Out of the Device");
+      this.logoutUser(); // Already expired
+    } else {
+      setTimeout(() => {
+        alert("Session TimedOut, Logged Out of the Device");
+        this.logoutUser(); // Auto logout when time is up
+      }, timeout);
+    }
   }
 
 }

@@ -3,13 +3,14 @@ import { computed, effect, Injectable, signal } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { CartItem } from '../../models/cart.model';
 import { UsersService } from './users.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
 
-  api = "https://localhost:44394/api/Cart";
+  api = environment.apiBaseUrl + "Cart";
 
   cartQtys = signal<Map<string, number>>(new Map<string, number>());
 

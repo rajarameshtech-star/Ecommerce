@@ -1,9 +1,3 @@
-<dialog [open]="editing" >
-    <input type="text" [value]="editingProduct()?.productTitle"> <br>
-    <input type="text" [value]="editingProduct()?.productDescription"> <br>
-    <input type="number" [value]="editingProduct()?.price">
-</dialog>
-
 <div>
     <input type="text" [(ngModel)]="searchString" name="searchString">
     <input type="number" [(ngModel)]="minPrice" name="minPrice">
@@ -12,7 +6,7 @@
 </div>
 
 @for( product of products(); track $index) {
-    <app-product [product]="product" (edit)="editProduct($event)"></app-product>
+    <app-product [product]="product" (delete)="deleteProduct($event)" (edit)="editProduct($event)"></app-product>
 }
 
 <!-- pagination -->

@@ -2,14 +2,17 @@ import { Component, signal } from '@angular/core';
 import { ProductsService } from '../../services/products.service';
 import { ProductDetails } from '../../../models/product.models';
 import { ProductComponent } from "./product/product.component";
-import { FormsModule, NgModel } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-seller-products',
-  imports: [ProductComponent, FormsModule],
+  standalone: true,
+  imports: [CommonModule, ProductComponent, FormsModule, MatSnackBarModule],
   templateUrl: './seller-products.component.html',
-  styleUrl: './seller-products.component.css'
+  styleUrls: ['./seller-products.component.css']
 })
 export class SellerProductsComponent {
 
@@ -20,11 +23,10 @@ export class SellerProductsComponent {
   pageNumber: number = 1;
   hasNextPage: boolean = true;
 
-  editingProduct = signal<ProductDetails | undefined>(undefined);
   products = signal<ProductDetails[]>([]);
-  editing = false;
+  tempProduct!: ProductDetails;
 
-  constructor(private productsService : ProductsService, private route:ActivatedRoute,private router:Router) {
+  constructor(private productsService : ProductsService, private route:ActivatedRoute,private router:Router, private snackBar:MatSnackBar) {
     
    }
 
@@ -40,10 +42,80 @@ export class SellerProductsComponent {
     this.loadProducts();
   }
 
-   editProduct(productId : string) {
-    // Logic to edit the product
-    this.editingProduct.set(this.products().find((v,i,o) => v.id === productId));
-    this.editing=true;
+   editProduct(product: ProductDetails) {
+    this.productsService.updateProduct(product).subscribe(() => {
+      this.products.update((prods) => {
+        this.tempProduct = prods.find(p => p.id === product.id)!;
+        let newProds = prods.map((prod) => (prod.id === product.id ? product : prod));
+        return newProds;
+      })
+    });
+
+    let snackRef = this.snackBar.open(
+      ''+product.productTitle+' updated successfully',
+      'undo',
+      {
+        duration: 3000,
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+      }
+    );
+    snackRef.onAction().subscribe(() => {
+      this.productsService.updateProduct(this.tempProduct).subscribe(() => {
+        this.products.update((prods) => {
+          let newProds = prods.map((prod) => (prod.id === this.tempProduct.id ? this.tempProduct : prod));
+          return newProds;
+        })
+      });
+      var snackRef2 = this.snackBar.open(
+        ''+product.productTitle+' updated reverted successfully',
+        'ok',
+        {
+          duration: 3000,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+        }
+      );
+      snackRef2.onAction().subscribe(()=>{
+        console.log("undone the update");
+      });
+    })
+
+   }
+
+   deleteProduct(productId:string) {
+    this.tempProduct = this.products().find(p => p.id === productId)!;
+    console.log("temp product", this.tempProduct);
+    this.productsService.deleteProduct(productId).subscribe(() => {
+      this.products.update((prods) => prods.filter(prod => prod.id !== productId));
+    });
+
+    let snackRef = this.snackBar.open(
+      'Product deleted successfully',
+      'undo',
+      {
+        duration: 3000,
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+      }
+    );
+    snackRef.onAction().subscribe(() => {
+      this.productsService.addProduct(this.tempProduct).subscribe(() => {
+        this.products.update((prods) => [this.tempProduct, ...prods]);
+      });
+      var snackRef2 = this.snackBar.open(
+        ''+this.tempProduct.productTitle+' deletion reverted successfully',
+        'ok',
+        {
+          duration: 3000,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+        }
+      );
+      snackRef2.onAction().subscribe(()=>{
+        console.log("undone the delete");
+      });
+    })
    }
 
    nextPage() {

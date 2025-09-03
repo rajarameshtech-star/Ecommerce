@@ -2,4 +2,5 @@
 <p>{{product().productDescription}}</p>
 <p>Price: {{product().price}}</p>
 <p>Quantity: {{product().quantity}}</p>
-<button (click)="editProduct()">edit</button>
+<button mat-button color="primary" (click)="editProduct()">Edit</button>
+<button mat-button  (click)="deleteProduct()">Delete</button>

@@ -1,0 +1,5 @@
+mat-dialog-actions > button[mat-button] {
+  background-color: red;
+  color: white;
+}
+

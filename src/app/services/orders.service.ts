@@ -2,8 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, of } from 'rxjs';
 import { Order } from '../../models/order.models';
-import { start } from '@popperjs/core';
-
+import { environment } from '../../environments/environment';
 
 interface OrderResponse {
   status: string;
@@ -14,7 +13,7 @@ interface OrderResponse {
 })
 export class OrdersService {
 
-  api = "https://localhost:44394/api/orders";
+  api = environment.apiBaseUrl + "orders";
 
   constructor(private http:HttpClient) {  }
 

@@ -7,7 +7,7 @@ import { ProductListComponent } from './product-list/product-list.component';
 import { ProductViewComponent } from './product-view/product-view.component';
 import { CartComponent } from './cart/cart.component';
 import { OrdersComponent } from './orders/orders.component';
-import { authGuard, noAuthGuard } from './guards/auth.guard';
+import { authGuard, noAuthGuard, timeoutGuard } from './guards/auth.guard';
 import { sellerGuard, userGuard } from './guards/role-guard.guard';
 import { registerAppScopedDispatcher } from '@angular/core/primitives/event-dispatch';
 import { SellerDashboardComponent } from './seller/seller-dashboard/seller-dashboard.component';
@@ -55,15 +55,17 @@ export const routes: Routes = [
      {
         path: "seller",
         component: SellerDashboardComponent , // Change to SellerDashboardComponent when created
-        canActivate : [authGuard, sellerGuard],
+        canActivate : [authGuard, sellerGuard, timeoutGuard],
         children : [
             {
                 path : "products",
-                component : SellerProductsComponent
+                component : SellerProductsComponent,
+                canActivate : [timeoutGuard]
             },
             {
                 path : "orders",
-                component : SellerOrdersComponent
+                component : SellerOrdersComponent,
+                canActivate : [timeoutGuard]
             }
         ]
      }
