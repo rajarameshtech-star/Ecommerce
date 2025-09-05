@@ -63,7 +63,7 @@ export class ProductComponent {
         this.delete.emit(this.product().id);
       }
       else {
-        this.editProduct();
+        // this.editProduct();
       }
     });
   }

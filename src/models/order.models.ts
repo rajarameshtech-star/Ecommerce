@@ -26,7 +26,7 @@ export interface Product {
     orderedDate: string;
     expectedDeliveryBy: string;
     deliveryDate: string;
-    status: string;
-    paymentStatus: string;
+    status: "Pending"|"Delivered"|"Shipped"|"OutForDelivery";
+    paymentStatus: "Pending"|"Paid";
   }
   

@@ -1,0 +1,28 @@
+<h1 mat-dialog-title>Update Order</h1>
+<div mat-dialog-content>
+  <p><strong>Order ID:</strong> {{ order.id }}</p>
+  <p><strong>Product:</strong> {{ order.product.productTitle }}</p>
+  <p><strong>Price:</strong> {{ order.product.price | currency:'INR' }}</p>
+  <p><strong>Quantity:</strong> {{ order.quantity }}</p>
+  <p><strong>Ordered On:</strong> {{ order.orderedDate | date: 'medium' }}</p>
+  <mat-divider></mat-divider>
+  <div class="form-fields">
+    <mat-form-field appearance="fill">
+      <mat-label>Order Status</mat-label>
+      <mat-select [(ngModel)]="updatedOrder.status">
+        <mat-option *ngFor="let status of orderStatuses" [value]="status">{{ status }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Payment Status</mat-label>
+      <mat-select [(ngModel)]="updatedOrder.paymentStatus">
+        <mat-option *ngFor="let status of paymentStatuses" [value]="status">{{ status }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="updateOrder()">Update</button>
+  <button mat-button (click)="dialogRef.close()">Cancel</button>
+</div>

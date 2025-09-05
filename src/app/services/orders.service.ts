@@ -47,7 +47,7 @@ export class OrdersService {
     sellerId?: string,
     orderStatus?: string,
     paymentStatus? : string,
-    pageSize?: number, 
+    pageSize: number=30, 
     pageNumber: number=1,
 
   ): Observable<Order[]> {
@@ -84,5 +84,46 @@ export class OrdersService {
   }
 
 
+  getSellerOrders(
+    data : {
+      startDate?: string,
+      endDate?: string
+      orderStatus?: string,
+      paymentStatus? : string,
+      pageSize: number, 
+      pageNumber: number,
+    }
+  ) {
+    let params = new HttpParams();
+
+    if(data.startDate!=undefined && data.startDate!=null && data.endDate != undefined && data.endDate != null) {
+      params = params.append("startDate", data.startDate);
+      params = params.append("endDate", data.endDate);
+    }
+
+    if(data.orderStatus != undefined && data.orderStatus != null) {
+      params = params.append("orderStatus", data.orderStatus);
+    }
+
+    if(data.paymentStatus != undefined && data.paymentStatus != null) {
+      params = params.append("paymentStatus", data.paymentStatus);
+    }
+
+    if(data.pageSize && data.pageSize > 0) {
+      params = params.append("pageSize", data.pageSize.toString());
+    }
+
+    if(data.pageNumber && data.pageNumber > -1) {
+      params = params.append("pageNumber", data.pageNumber.toString());
+    }
+
+
+    return this.http.get<Order[]>(this.api + "/seller/", { params });
+  }
+
+  updateOrderStatus(orderId: string, orderStatus: string, paymentStatus: string): Observable<any> {
+    const url = `${this.api}/${orderId}`;
+    return this.http.patch(url, { orderStatus, paymentStatus });
+  }
 
 }

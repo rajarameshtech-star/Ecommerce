@@ -1,47 +1,55 @@
-<div>
-<mat-form-field appearance="outline">
-    <mat-label>Search</mat-label>
-    <input matInput type="text" [(ngModel)]="searchString" name="searchString">
-</mat-form-field>
-<mat-form-field appearance="outline">
-    <mat-label>min price</mat-label>
-    <input matInput type="number" [(ngModel)]="minPrice" name="minPrice">
-</mat-form-field>
-<mat-form-field appearance="outline">
-    <mat-label>max price</mat-label>
-    <input matInput type="number" [(ngModel)]="maxPrice" name="maxPrice">
-</mat-form-field>
-<button mat-flat-button style="font-size: larger;" (click)="loadProducts()">get products</button>
-</div>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #sidenav mode="side" opened="false">
+    <div class="filters-container">
+      <h3>Filters</h3>
+      <mat-form-field appearance="outline">
+        <mat-label>Search</mat-label>
+        <input matInput type="text" [(ngModel)]="searchString" name="searchString">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>min price</mat-label>
+        <input matInput type="number" [(ngModel)]="minPrice" name="minPrice">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>max price</mat-label>
+        <input matInput type="number" [(ngModel)]="maxPrice" name="maxPrice">
+      </mat-form-field>
+      <button mat-flat-button style="font-size: larger;" (click)="loadProducts(); sidenav.close()">get products</button>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <button mat-icon-button (click)="sidenav.toggle()" class="filter-button">
+      <mat-icon>filter_list</mat-icon>
+    </button>
 
-
-<mat-form-field appearance="fill">
-    <mat-label>View Mode</mat-label>
-    <mat-select [(ngModel)]="view">
-      <mat-option value="grid">Grid</mat-option>
-      <mat-option value="list">List</mat-option>
-      <mat-option value="thread">Thread</mat-option>
-    </mat-select>
-  </mat-form-field>
-
-
-<mat-checkbox [(ngModel)]="canSelectMultiple" (ngModelChange)="selectedIds.clear()"></mat-checkbox>
-<mat-label><mat-icon>list</mat-icon></mat-label>
-@if(canSelectMultiple && selectedIds.size > 0) {
-<button mat-flat-button (click)="deleteSelectedProducts()"><mat-icon>delete</mat-icon></button>
-}
-<hr/>
-<div [ngClass]="view">
-    @for( product of products(); track $index) {
-    <app-product [product]="product" (delete)="deleteProduct($event)" [selectable]="canSelectMultiple"
-        (edit)="editProduct($event)" (selected)="handleSelection($event)">
-    </app-product>
+    <mat-form-field appearance="fill">
+        <mat-label>View Mode</mat-label>
+        <mat-select [(ngModel)]="view">
+          <mat-option value="grid">Grid</mat-option>
+          <mat-option value="list">List</mat-option>
+          <mat-option value="thread">Thread</mat-option>
+        </mat-select>
+      </mat-form-field>
+    
+    
+    <mat-checkbox [(ngModel)]="canSelectMultiple" (ngModelChange)="selectedIds.clear()"></mat-checkbox>
+    <mat-label><mat-icon>list</mat-icon></mat-label>
+    @if(canSelectMultiple && selectedIds.size > 0) {
+    <button mat-flat-button (click)="deleteSelectedProducts()"><mat-icon>delete</mat-icon></button>
     }
-</div>
-
-<!-- pagination -->
-<div>
-    <button [disabled]="pageNumber == 1" (click)="previousPage()">prev</button>
-    <span>{{pageNumber}}</span>
-    <button [disabled]="!hasNextPage" (click)="nextPage()">next</button>
-</div>
+    <div [ngClass]="view">
+        @for( product of products(); track $index) {
+        <app-product [product]="product" (delete)="deleteProduct($event)" [selectable]="canSelectMultiple"
+            (edit)="editProduct($event)" (selected)="handleSelection($event)">
+        </app-product>
+        }
+    </div>
+    
+    <!-- pagination -->
+    <div>
+        <button [disabled]="pageNumber == 1" (click)="previousPage()">prev</button>
+        <span>{{pageNumber}}</span>
+        <button [disabled]="!hasNextPage" (click)="nextPage()">next</button>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

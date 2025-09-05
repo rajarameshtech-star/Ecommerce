@@ -1,0 +1,27 @@
+h1[mat-dialog-title] {
+  text-align: center;
+  font-weight: bold;
+}
+mat-divider {
+  margin: 1rem 0;
+}
+.status-pending {
+  color: #ffc107;
+  font-weight: bold;
+}
+.status-paid {
+  color: #4caf50;
+  font-weight: bold;
+}
+.status-delivered {
+  color: #4caf50;
+  font-weight: bold;
+}
+.status-shipped {
+  color: #2196f3;
+  font-weight: bold;
+}
+.status-outfordelivery {
+  color: #ff9800;
+  font-weight: bold;
+}

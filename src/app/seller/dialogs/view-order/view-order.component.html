@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>Order Details</h1>
+<div mat-dialog-content>
+  <p><strong>Order ID:</strong> {{ order.id }}</p>
+  <mat-divider></mat-divider>
+  <h4>Product Details</h4>
+  <p><strong>Product:</strong> {{ order.product.productTitle }}</p>
+  <p><strong>Description:</strong> {{ order.product.productDescription }}</p>
+  <p><strong>Price:</strong> {{ order.product.price | currency:'INR' }}</p>
+  <p><strong>Quantity:</strong> {{ order.quantity }}</p>
+  <mat-divider></mat-divider>
+  <h4>Order Status</h4>
+  <p><strong>Ordered On:</strong> {{ order.orderedDate | date: 'medium' }}</p>
+  <p><strong>Expected Delivery:</strong> {{ order.expectedDeliveryBy | date: 'medium' }}</p>
+  <p><strong>Status:</strong> <span class="status-{{order.status.toLowerCase()}}">{{ order.status }}</span></p>
+  <p><strong>Payment Status:</strong> <span class="status-{{order.paymentStatus.toLowerCase()}}">{{ order.paymentStatus }}</span></p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Close</button>
+</div>

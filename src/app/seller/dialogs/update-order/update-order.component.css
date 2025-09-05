@@ -1,0 +1,11 @@
+h1[mat-dialog-title] {
+  text-align: center;
+  font-weight: bold;
+}
+mat-divider {
+  margin: 1rem 0;
+}
+.form-fields {
+  display: flex;
+  gap: 1rem;
+}

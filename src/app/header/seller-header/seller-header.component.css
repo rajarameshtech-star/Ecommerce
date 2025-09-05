@@ -1,12 +1,22 @@
-ul {
-    list-style: none;
-    padding-left: 0;
+.spacer {
+  flex: 1 1 auto;
 }
 
-li{
-    display: inline-block;
-    margin-right: 15px;
-    padding: 1rem;
-    font-size: larger;
-    font-weight: 900;
+mat-toolbar {
+  background: var(--primary-color);
+  color: white;
+}
+
+a[mat-button] {
+  color: white;
+  text-transform: uppercase;
+  margin: 0 0.5rem;
+}
+
+a.active-link {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+mat-icon {
+  color: white;
 }

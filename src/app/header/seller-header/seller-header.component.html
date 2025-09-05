@@ -1,18 +1,13 @@
-<ul>
-    <li>
-        <a [routerLink]="['seller', 'dashboard']">Dashboard</a>
-    </li>
-    <li>
-        <a [routerLink]="['seller', 'orders']">orders</a>
-    </li>
-    <li>
-        <a [routerLink]="['seller', 'products']">Product List</a>
-    </li>
-    <li>
-        <a [routerLink]="['seller', 'add-product']">Add Product</a>
-    </li>
-    <li>
-        <a (click)="onLogout()">
-        Logout</a>
-    </li>
-</ul>
+<mat-toolbar color="primary">
+  <span>Seller Dashboard</span>
+  <span class="spacer"></span>
+  <a mat-button [routerLink]="['/seller', 'dashboard']" routerLinkActive="active-link">Dashboard</a>
+  <a mat-button [routerLink]="['/seller', 'orders']" routerLinkActive="active-link">Orders</a>
+  <a mat-button [routerLink]="['/seller', 'products']" routerLinkActive="active-link">Products</a>
+  <a mat-button [routerLink]="['/seller', 'add-product']" routerLinkActive="active-link">
+    <mat-icon>add</mat-icon>
+    Add Product</a>
+  <button mat-icon-button (click)="onLogout()" aria-label="Logout">
+    <mat-icon>exit_to_app</mat-icon>
+  </button>
+</mat-toolbar>

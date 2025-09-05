@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-seller-products',
@@ -21,7 +22,8 @@ import { MatSelectModule } from '@angular/material/select';
     CommonModule, ProductComponent, FormsModule,
     MatSnackBarModule, MatCheckboxModule,
     MatInputModule,
-    MatIconModule, MatButtonModule, MatFormFieldModule, MatSelectModule
+    MatIconModule, MatButtonModule, MatFormFieldModule, MatSelectModule,
+    MatSidenavModule,
 ],
   templateUrl: './seller-products.component.html',
   styleUrls: ['./seller-products.component.css']
