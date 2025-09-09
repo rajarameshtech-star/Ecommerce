@@ -58,13 +58,25 @@
   <app-seller-header (logout)="logout()"></app-seller-header>
 }
 @else {
-  <!-- <app-guest-header></app-guest-header> -->
-   <div><h1>FunkyShop</h1></div>
-   <ul>
-    <li >
-      <a [routerLink]="['login']">Login</a></li>
-    <li >
-      <a [routerLink]="['products']">Products</a>
-    </li>
-   </ul>
+  <mat-toolbar color="primary" class="mat-elevation-z4">
+    <a class="brand-logo" [routerLink]="['/']">
+      <mat-icon>store</mat-icon>
+      <span>FunkyShop</span>
+    </a>
+    <div class="search-bar">
+      <input type="text" placeholder="Search for products...">
+      <button mat-icon-button>
+        <mat-icon>search</mat-icon>
+      </button>
+    </div>
+    <span class="spacer"></span>
+    <a mat-button [routerLink]="['/products']">
+      <mat-icon>view_list</mat-icon>
+      <span>Products</span>
+    </a>
+    <a mat-button [routerLink]="['/login']">
+      <mat-icon>login</mat-icon>
+      <span>Login</span>
+    </a>
+  </mat-toolbar>
 }

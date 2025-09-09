@@ -4,8 +4,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { ProductsService } from '../../services/products.service';
-import { ProductDetails } from '../../../models/product.models';
+import { ProductsService } from '../../../services/products.service';
+import { ProductDetails } from '../../../../models/product.models';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 

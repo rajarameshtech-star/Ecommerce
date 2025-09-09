@@ -23,7 +23,10 @@ export class LoginComponent {
       next:(response)=>{
         localStorage.setItem("jwt", response.jwt);
         alert("user logged in successfully");
+        if(response.roles[0] == "User")
         this.router.navigate(["products"])
+        else 
+        this.router.navigate(['seller','orders'])
       }
     });
   }

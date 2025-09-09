@@ -15,10 +15,10 @@ export class ProductListComponent implements OnInit {
   products: ProductDetails[] = [];
   
   // Filter and Pagination properties
-  searchString: string = '2';
+  searchString: string = '';
   minPrice: number | undefined = 0;
   maxPrice: number | undefined = 1000000;
-  pageSize: number = 25;
+  pageSize: number = 50;
   pageNumber: number = 1;
   hasNextPage: boolean = true;
 
@@ -41,12 +41,12 @@ export class ProductListComponent implements OnInit {
   }
 
   onSearch() {
-    this.pageNumber = 1; // Reset to first page for new search
+    this.pageNumber = 0; // Reset to first page for new search
     this.loadProducts();
   }
 
   previousPage() {
-    if (this.pageNumber > 1) {
+    if (this.pageNumber > 0) {
       this.pageNumber--;
       this.loadProducts();
     }

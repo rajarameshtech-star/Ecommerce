@@ -1,0 +1,14 @@
+#include<iostream.h>
+
+using namespace std;
+
+int main()
+{
+    std::cout<<"Please enter first number";
+    std::cin>>a;
+
+    std::cout<<"Please enter second number";
+    std::cin>>b;
+
+    std::cout<<"The sum of the two numbers is :" << (a+b);
+}
