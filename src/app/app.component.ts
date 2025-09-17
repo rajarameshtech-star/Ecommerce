@@ -4,6 +4,7 @@ import { HeaderComponent } from "./header/header.component";
 
 import { FooterComponent } from './footer/footer.component';
 import { CartService } from './services/cart.service';
+import { OrderHubService } from './services/order-hub.service';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,10 @@ import { CartService } from './services/cart.service';
 export class AppComponent {
   title = 'Ecommerce';
 
-  constructor(private cartService : CartService){}
+  constructor(private cartService : CartService){
+    
+  
+  }
   
 
 }

@@ -14,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { OrderHubService } from '../../services/order-hub.service';
 
 @Component({
   selector: 'app-seller-products',
@@ -38,19 +39,20 @@ export class SellerProductsComponent {
   pageSize: number = 30;
   pageNumber: number = 1;
   hasNextPage: boolean = true;
-  selectedIds:Set<string> = new Set();
+  selectedIds: Set<string> = new Set();
 
   products = signal<ProductDetails[]>([]);
+  quantities: { [productId: string]: number } = {}; // Updated to a dictionary
   tempProduct!: ProductDetails;
 
-  constructor(private productsService: ProductsService,
+  constructor(
+    private productsService: ProductsService,
     private route: ActivatedRoute,
     private router: Router,
     private snackBar: MatSnackBar,
-    private productEvents: ProductEventsService
-  ) {
-  }
-
+    private productEvents: ProductEventsService,
+    private orderHubService: OrderHubService
+  ) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
@@ -65,6 +67,13 @@ export class SellerProductsComponent {
     });
 
     this.loadProducts();
+
+    // this.orderHubService.startConnection()
+    // .then(() =>
+    //    setInterval(() => {
+    //     this.orderHubService.triggerUpdate()
+    //    }, 1000)
+    // );
   }
 
   editProduct(product: ProductDetails) {
@@ -162,18 +171,31 @@ export class SellerProductsComponent {
         min: this.minPrice,
         max: this.maxPrice,
         size: this.pageSize,
-        page: this.pageNumber
+        page: this.pageNumber,
       },
-      queryParamsHandling: 'merge' // Optional: keeps existing params
+      queryParamsHandling: 'merge', // Optional: keeps existing params
     });
-    this.productsService.getProducts(this.searchString, this.minPrice, this.maxPrice, this.pageSize, this.pageNumber).subscribe(products => {
-      this.products.set(products);
-      if (products.length < this.pageSize) {
-        this.hasNextPage = false;
-      } else {
-        this.hasNextPage = true;
-      }
-    });
+
+    this.productsService
+      .getProductsAndOrderQtys(
+        this.searchString,
+        this.minPrice,
+        this.maxPrice,
+        this.pageSize,
+        this.pageNumber
+      )
+      .subscribe(({ products, quantities }) => {
+        this.products.set(products);
+        // Convert quantities array to a dictionary
+        console.log(quantities);
+        this.quantities = quantities.reduce((acc, qty) => {
+          acc[qty.productId] = qty.pendingOrderQuantity;
+          console.log(qty);
+          return acc;
+        }, {} as { [productId: string]: number });
+        console.log("this.quantities" , this.quantities);
+        this.hasNextPage = products.length >= this.pageSize;
+      });
   }
 
   handleSelection(selectedId:string){
@@ -195,4 +217,6 @@ export class SellerProductsComponent {
       verticalPosition: 'bottom',
     })
   }
+
+  
 }

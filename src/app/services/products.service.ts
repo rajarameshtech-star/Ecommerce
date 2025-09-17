@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ProductDetails, ProductInfo } from '../../models/product.models';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, forkJoin } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ProductEventsService } from '../shared/product-events.service';
 
@@ -67,5 +67,42 @@ export class ProductsService {
     //     this.productEvents.triggerProductChangeEvent();
     //   })
     // );
+  }
+
+  getProductsAndOrderQtys(
+    searchString?: string,
+    minPrice?: number,
+    maxPrice?: number,
+    pageSize?: number,
+    pageNumber?: number,
+    sellerId?: string
+  ): Observable<{ products: ProductDetails[]; quantities: { productId: string; pendingOrderQuantity: number }[] }> {
+    let params = new HttpParams();
+    if (searchString) {
+      params = params.append('searchString', searchString);
+    }
+    if (minPrice !== undefined && minPrice !== null) {
+      params = params.append('minPrice', minPrice.toString());
+    }
+    if (maxPrice !== undefined && maxPrice !== null) {
+      params = params.append('maxPrice', maxPrice.toString());
+    }
+    if (pageSize !== undefined && pageSize !== null) {
+      params = params.append('pageSize', pageSize.toString());
+    }
+    if (pageNumber !== undefined && pageNumber !== null) {
+      params = params.append('pageNumber', pageNumber.toString());
+    }
+    if (sellerId) {
+      params = params.append('sellerId', sellerId);
+    }
+
+    const products$ = this.http.get<ProductDetails[]>(this.api, { params });
+    const quantities$ = this.http.get<{ productId: string; pendingOrderQuantity: number }[]>(`${this.api}/OrderQuantities`, { params });
+
+    return forkJoin({
+      products: products$,
+      quantities: quantities$
+    });
   }
 }

@@ -2,16 +2,17 @@
     <h2>{{product().productTitle}}</h2>
     <p>{{product().productDescription}}</p>
 </div>
+
 <div>
     <span> <mat-icon class="price-icon">sell</mat-icon> $ {{product().price}}</span>
     <span> <mat-icon class="inventory-icon">inventory</mat-icon> {{product().quantity}}</span>
+    <span *ngIf="orderedQuantity() > 0"> 
+        <mat-icon class="order-icon">shopping_cart</mat-icon> Ordered Quantity: {{orderedQuantity()}}
+    </span>
 </div>
-<div class="actions">
+<div class="actions" *ngIf="orderedQuantity() === 0">
     <button mat-button color="primary" (click)="editProduct()" ><mat-icon class="edit-icon">edit</mat-icon>Edit</button>
     <button mat-button  (click)="deleteProduct()"><mat-icon class="delete-icon">delete_outline</mat-icon>delete</button>
-    @if(selectable()) {
-        <mat-checkbox class="select" [(ngModel)]="isSelected" (change)="notifySelection()">
-            
-        </mat-checkbox>
-    }
+    <mat-checkbox *ngIf="selectable()" class="select" [(ngModel)]="isSelected" (change)="notifySelection()">
+    </mat-checkbox>
 </div>

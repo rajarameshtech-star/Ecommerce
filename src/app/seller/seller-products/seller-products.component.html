@@ -40,7 +40,8 @@
     <div [ngClass]="view">
         @for( product of products(); track $index) {
         <app-product [product]="product" (delete)="deleteProduct($event)" [selectable]="canSelectMultiple"
-            (edit)="editProduct($event)" (selected)="handleSelection($event)">
+            (edit)="editProduct($event)" (selected)="handleSelection($event)"
+            [orderedQuantity]="quantities[product.id] || 0">
         </app-product>
         }
     </div>

@@ -1,4 +1,4 @@
-import { Component, effect, EventEmitter, input, output } from '@angular/core';
+import { Component, effect, EventEmitter, input, output, signal } from '@angular/core';
 import { ProductDetails } from '../../../../models/product.models';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { EditProductComponent } from '../edit-product/edit-product.component';
@@ -22,6 +22,7 @@ import { MatIconModule } from '@angular/material/icon';
 export class ProductComponent {
   product = input.required<ProductDetails>();
   selectable = input.required<boolean>();
+  orderedQuantity = input.required<number>(); // Default value is 0
   isSelected = false;
 
   edit = output<ProductDetails>();
@@ -71,4 +72,5 @@ export class ProductComponent {
   notifySelection() {
     this.selected.emit(this.product().id);
   }
+
 }
