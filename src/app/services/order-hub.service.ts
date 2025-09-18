@@ -53,8 +53,14 @@ export class OrderHubService {
     }
 
     // Example: Listening to a "ReceiveMessage" event
-    this.connection.on('ReceiveMessage', (user: string, message: string) => {
+    this.connection.on('recieveMessage', (user: string, message: string) => {
       console.log(`Message received from ${user}: ${message}`);
+    });
+
+    // Listening to the "OrderPlaced" event
+    this.connection.on('OrderPlaced', (data: { productTitle: string; quantityRequested: number }) => {
+      console.log(`OrderPlaced event received: Product Title - ${data.productTitle}, Quantity Requested - ${data.quantityRequested}`);
+      // You can handle the data here, e.g., update the UI or notify the user
     });
   }
 

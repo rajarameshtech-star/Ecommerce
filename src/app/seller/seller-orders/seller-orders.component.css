@@ -72,7 +72,41 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding: 1rem;
+  padding: 1.5rem;
+  background-color: #f9f9f9;
+  border-right: 1px solid #e0e0e0;
+}
+
+.filters-container h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.filters-container mat-form-field {
+  width: 100%;
+}
+
+.filters-container .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #aaa;
+}
+
+.filters-container .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: #3f51b5;
+}
+
+.filters-container .mat-input-element {
+  color: #333;
+}
+
+.filters-container mat-checkbox {
+  margin-bottom: 1rem;
+}
+
+.filters-container button[mat-raised-button] {
+  margin-top: 1rem;
 }
 
 .filter-button {

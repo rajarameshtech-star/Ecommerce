@@ -1,0 +1,12 @@
+.order-snackbar {
+    background-color: #4caf50; /* Green background */
+    color: white; /* White text */
+    font-weight: bold;
+  }
+
+  .latest-orders-btn {
+    position:fixed;
+    top: 5rem;
+    padding-inline: 2rem;
+    z-index: 100;
+  }

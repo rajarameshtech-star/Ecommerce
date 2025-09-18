@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, computed } from '@angular/core';
 import { ProductsService } from '../../services/products.service';
 import { ProductDetails } from '../../../models/product.models';
 import { ProductComponent } from "./product/product.component";
@@ -7,8 +7,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ProductEventsService } from '../../shared/product-events.service';
-import { MatCheckbox, MatCheckboxModule } from "@angular/material/checkbox";
-import { MatFormField, MatInputModule } from "@angular/material/input";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatInputModule } from "@angular/material/input";
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -25,7 +25,7 @@ import { OrderHubService } from '../../services/order-hub.service';
     MatInputModule,
     MatIconModule, MatButtonModule, MatFormFieldModule, MatSelectModule,
     MatSidenavModule,
-],
+  ],
   templateUrl: './seller-products.component.html',
   styleUrls: ['./seller-products.component.css']
 })
@@ -44,6 +44,32 @@ export class SellerProductsComponent {
   products = signal<ProductDetails[]>([]);
   quantities: { [productId: string]: number } = {}; // Updated to a dictionary
   tempProduct!: ProductDetails;
+
+  sortOrder = signal<'name-asc' | 'name-desc' | 'price-asc' | 'price-desc'>('name-asc');
+  clientSideFilter = signal<string>('');
+
+  filteredProducts = computed(() => {
+    const prods = this.products();
+    const filter = this.clientSideFilter().toLowerCase();
+    const sortedProds = [...prods].sort((a, b) => {
+      switch (this.sortOrder()) {
+        case 'name-asc':
+          return a.productTitle.localeCompare(b.productTitle);
+        case 'name-desc':
+          return b.productTitle.localeCompare(a.productTitle);
+        case 'price-asc':
+          return a.price - b.price;
+        case 'price-desc':
+          return b.price - a.price;
+      }
+    });
+
+    if (!filter) {
+      return sortedProds;
+    }
+
+    return sortedProds.filter(p => p.productTitle.toLowerCase().includes(filter));
+  });
 
   constructor(
     private productsService: ProductsService,
@@ -67,13 +93,6 @@ export class SellerProductsComponent {
     });
 
     this.loadProducts();
-
-    // this.orderHubService.startConnection()
-    // .then(() =>
-    //    setInterval(() => {
-    //     this.orderHubService.triggerUpdate()
-    //    }, 1000)
-    // );
   }
 
   editProduct(product: ProductDetails) {
@@ -173,7 +192,7 @@ export class SellerProductsComponent {
         size: this.pageSize,
         page: this.pageNumber,
       },
-      queryParamsHandling: 'merge', // Optional: keeps existing params
+      queryParamsHandling: 'merge',
     });
 
     this.productsService
@@ -186,14 +205,10 @@ export class SellerProductsComponent {
       )
       .subscribe(({ products, quantities }) => {
         this.products.set(products);
-        // Convert quantities array to a dictionary
-        console.log(quantities);
         this.quantities = quantities.reduce((acc, qty) => {
           acc[qty.productId] = qty.pendingOrderQuantity;
-          console.log(qty);
           return acc;
         }, {} as { [productId: string]: number });
-        console.log("this.quantities" , this.quantities);
         this.hasNextPage = products.length >= this.pageSize;
       });
   }
@@ -206,10 +221,6 @@ export class SellerProductsComponent {
   deleteSelectedProducts() {
     if(this.selectedIds.size === 0) return;
     let ids = Array.from(this.selectedIds);
-    // this.productsService.deleteMultipleProducts(ids).subscribe(() => {
-    //   this.products.update((prods) => prods.filter(prod => !this.selectedIds.has(prod.id)));
-    //   this.selectedIds.clear();
-    // });
     this.selectedIds.clear();
     this.snackBar.open("Deleted multiple products successfully", 'undo', {
       duration: 3000,
@@ -217,6 +228,4 @@ export class SellerProductsComponent {
       verticalPosition: 'bottom',
     })
   }
-
-  
 }

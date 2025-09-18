@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, of } from 'rxjs';
-import { Order } from '../../models/order.models';
+import { Order, OrderSortEnum } from '../../models/order.models';
 import { environment } from '../../environments/environment';
 
 interface OrderResponse {
@@ -90,15 +90,28 @@ export class OrdersService {
       endDate?: string
       orderStatus?: string,
       paymentStatus? : string,
-      pageSize: number, 
-      pageNumber: number,
+      pageSize?: number, 
+      pageNumber?: number,
+      sortBy?: OrderSortEnum,
+      reverse?: boolean
     }
   ) {
     let params = new HttpParams();
 
-    if(data.startDate!=undefined && data.startDate!=null && data.endDate != undefined && data.endDate != null) {
+    if(data.startDate!=undefined && data.startDate!=null) {
       params = params.append("startDate", data.startDate);
+    }
+
+    if(data.reverse) {
+      params = params.append("reverse", data.reverse.toString());
+    }
+
+    if(data.endDate!=undefined && data.endDate!=null) {
       params = params.append("endDate", data.endDate);
+    }
+
+    if(data.sortBy!=undefined && data.sortBy!=null) {
+      params = params.append("sortBy", data.sortBy);
     }
 
     if(data.orderStatus != undefined && data.orderStatus != null) {

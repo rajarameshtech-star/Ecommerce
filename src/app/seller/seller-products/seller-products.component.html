@@ -30,15 +30,30 @@
           <mat-option value="thread">Thread</mat-option>
         </mat-select>
       </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Sort By</mat-label>
+        <mat-select [ngModel]="sortOrder()" (ngModelChange)="sortOrder.set($event)">
+          <mat-option value="name-asc">Name (A-Z)</mat-option>
+          <mat-option value="name-desc">Name (Z-A)</mat-option>
+          <mat-option value="price-asc">Price (low to high)</mat-option>
+          <mat-option value="price-desc">Price (high to low)</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Filter</mat-label>
+        <input matInput type="text" [ngModel]="clientSideFilter()" (ngModelChange)="clientSideFilter.set($event)">
+      </mat-form-field>
     
     
     <mat-checkbox [(ngModel)]="canSelectMultiple" (ngModelChange)="selectedIds.clear()"></mat-checkbox>
     <mat-label><mat-icon>list</mat-icon></mat-label>
     @if(canSelectMultiple && selectedIds.size > 0) {
-    <button mat-flat-button (click)="deleteSelectedProducts()"><mat-icon>delete</mat-icon></button>
+    <button mat-flat-button (click)="deleteSelectedProducts()" color="warn"><mat-icon>delete</mat-icon></button>
     }
     <div [ngClass]="view">
-        @for( product of products(); track $index) {
+        @for( product of filteredProducts(); track $index) {
         <app-product [product]="product" (delete)="deleteProduct($event)" [selectable]="canSelectMultiple"
             (edit)="editProduct($event)" (selected)="handleSelection($event)"
             [orderedQuantity]="quantities[product.id] || 0">
