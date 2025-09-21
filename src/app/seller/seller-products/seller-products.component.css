@@ -27,7 +27,7 @@ app-product:hover {
 }
 
 .grid > app-product {
-    padding: 1.5rem;
+    /* padding: 1.5rem; */
     border: 1px solid #ccc;
     margin: 0.5rem;
     border-radius: 5px;
@@ -50,7 +50,7 @@ app-product:hover {
 }
 
 .list > app-product {
-    padding: 1.5rem;
+    /* padding: 1.5rem; */
     border: 1px solid #ccc;
     margin: 0.5rem;
     border-radius: 5px;
@@ -63,7 +63,7 @@ app-product:hover {
 .list::ng-deep > app-product > div > h2,.list::ng-deep > app-product >div > p {
     margin: 0;
     display: inline-block;
-    padding-right: 1rem;
+    /* padding-right: 1rem; */
 }
 .list::ng-deep > app-product > div > h2 {
     max-width: 300px;

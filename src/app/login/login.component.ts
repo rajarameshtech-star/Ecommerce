@@ -26,7 +26,7 @@ export class LoginComponent {
         if(response.roles[0] == "User")
         this.router.navigate(["products"])
         else 
-        this.router.navigate(['seller','orders'])
+        this.router.navigate(['seller','dashboard'])
       }
     });
   }

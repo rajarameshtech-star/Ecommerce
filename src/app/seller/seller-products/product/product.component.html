@@ -1,19 +1,35 @@
-<div class="details">
-    <h2>{{product().productTitle}}</h2>
-    <p>{{product().productDescription}}</p>
-</div>
-
-<div>
-    <span> <mat-icon class="price-icon">sell</mat-icon> $ {{product().price}}</span>
-    <span> <mat-icon class="inventory-icon">inventory</mat-icon> {{product().quantity}}</span>
-    <span *ngIf="orderedQuantity() > 0"> 
-        <button mat-button color="primary" (click)="checkProductOrders()" ><mat-icon class="edit-icon">eye_open</mat-icon>Check Orders</button>
-        <mat-icon class="order-icon">shopping_cart</mat-icon> Ordered Quantity: {{orderedQuantity()}}
-    </span>
-</div>
-<div class="actions" *ngIf="orderedQuantity() === 0">
-    <button mat-button color="primary" (click)="editProduct()" ><mat-icon class="edit-icon">edit</mat-icon>Edit</button>
-    <button mat-button  (click)="deleteProduct()"><mat-icon class="delete-icon">delete_outline</mat-icon>delete</button>
-    <mat-checkbox *ngIf="selectable()" class="select" [(ngModel)]="isSelected" (change)="notifySelection()">
-    </mat-checkbox>
+<div class="product-card-grid">
+  <div class="product-image">
+    <img [src]="product().productImage || 'https://via.placeholder.com/300x200'" alt="Product Image">
+    <mat-checkbox *ngIf="selectable()" class="select-checkbox" [(ngModel)]="isSelected" (change)="notifySelection()"></mat-checkbox>
+  </div>
+  <div class="product-details">
+    <h3>{{ product().productTitle }}</h3>
+    <p class="product-description">{{ product().productDescription }}</p>
+    <div class="product-info">
+      <span class="price">
+        <mat-icon>attach_money</mat-icon>
+        {{ product().price }}
+      </span>
+      <span class="quantity">
+        <mat-icon>inventory_2</mat-icon>
+        {{ product().quantity }}
+      </span>
+      <span *ngIf="orderedQuantity() > 0" class="ordered">
+        <mat-icon>shopping_cart</mat-icon>
+        {{ orderedQuantity() }}
+      </span>
+    </div>
+  </div>
+  <div class="product-actions">
+    <button mat-icon-button (click)="editProduct()" matTooltip="Edit">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-icon-button (click)="deleteProduct()" matTooltip="Delete">
+      <mat-icon>delete</mat-icon>
+    </button>
+    <button mat-icon-button *ngIf="orderedQuantity() > 0" (click)="checkProductOrders()" matTooltip="Check Orders">
+      <mat-icon>visibility</mat-icon>
+    </button>
+  </div>
 </div>
