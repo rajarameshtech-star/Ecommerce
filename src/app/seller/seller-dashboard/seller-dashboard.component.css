@@ -10,3 +10,8 @@
     padding-inline: 2rem;
     z-index: 100;
   }
+
+.seller-router-outlet-wrapper {
+    display: block;
+    min-height: 700px;
+  }

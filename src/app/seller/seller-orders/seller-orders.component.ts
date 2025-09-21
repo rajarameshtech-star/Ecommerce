@@ -49,8 +49,8 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class SellerOrdersComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  orderStatuses = ORDER_STATUSES;
-  paymentStatuses = PAYMENT_STATUSES;
+  orderStatuses:string[];
+  paymentStatuses:string[];
   displayedColumns = ['product', 'price', 'quantity', 'orderedDate', 'expectedDeliveryBy','status', 'paymentStatus', 'actions'];
 
   startDate: Date | null = null;
@@ -60,11 +60,12 @@ export class SellerOrdersComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedSortOption : OrderSortEnum = OrderSortEnum.OrderedDate;
   orderSortOptions = ORDER_SORT_OPTIONS;
   reverse = false;
-  orderStatus:"Pending"|"Delivered"|"Shipped"|"OutForDelivery"|undefined="Pending";
-  paymentStatus:"Pending"|"Paid"|undefined="Pending" ;
+  orderStatus:"Pending"|"Delivered"|"Shipped"|"OutForDelivery"|"All"|undefined="All";
+  paymentStatus:"Pending"|"Paid"|"All"|undefined="All" ;
   pageSize: number = 10;
   pageNumber: number = 0;
   hasNextPage = true;
+  productId:string | null = null;
 
   dataSource = new MatTableDataSource<Order>();
   @ViewChild(MatSort) sort!: MatSort;
@@ -76,7 +77,13 @@ export class SellerOrdersComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     public dialog: MatDialog,
-  ) {}
+  ) {
+    this.orderStatuses = [...ORDER_STATUSES];
+    this.paymentStatuses = [...PAYMENT_STATUSES];
+
+    this.orderStatuses.unshift("All");
+    this.paymentStatuses.unshift("All");
+  }
 
   ngOnInit() {
     this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe(params => {
@@ -84,12 +91,13 @@ export class SellerOrdersComponent implements OnInit, AfterViewInit, OnDestroy {
       this.startTime = params['startTime'] || '00:00';
       this.endDate = params['endDate'] ? new Date(params['endDate'] + 'T00:00:00') : null;
       this.endTime = params['endTime'] || '23:59';
-      this.orderStatus = params['orderStatus'] || 'Pending';
-      this.paymentStatus = params['paymentStatus'] || 'Pending';
+      this.orderStatus = params['orderStatus'] || "All";
+      this.paymentStatus = params['paymentStatus'] || "All";
       this.selectedSortOption = params['sortBy'] || OrderSortEnum.OrderedDate;
       this.reverse = params['reverse'] === 'true' ? true : false;
       this.pageNumber = params['pageNumber'] ? +params['pageNumber'] : 0;
       this.pageSize = params['pageSize'] ? +params['pageSize'] : 10;
+      this.productId = params['productId'] || null;
       this.fetchOrdersInternal();
     });
   }
@@ -191,12 +199,13 @@ export class SellerOrdersComponent implements OnInit, AfterViewInit, OnDestroy {
     this.orderService.getSellerOrders({
       startDate : startDateTime,
       endDate : endDateTime,
-      orderStatus : this.orderStatus,
-      paymentStatus : this.paymentStatus,
+      orderStatus : this.orderStatus === "All" ? undefined : this.orderStatus,
+      paymentStatus : this.paymentStatus === "All" ? undefined : this.paymentStatus,
       sortBy: this.selectedSortOption,
       reverse: this.reverse,
       pageNumber: this.pageNumber,
-      pageSize: this.pageSize
+      pageSize: this.pageSize,
+      productId: this.productId
     }).subscribe({
       next : (res) => {
         this.dataSource.data = res;

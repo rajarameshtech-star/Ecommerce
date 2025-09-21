@@ -28,6 +28,7 @@ export class ProductComponent {
   edit = output<ProductDetails>();
   delete = output<string>();
   selected = output<string>();
+  checkOrders = output<string>();
 
   constructor(public dialog: MatDialog) {
     effect(()=>{
@@ -73,4 +74,7 @@ export class ProductComponent {
     this.selected.emit(this.product().id);
   }
 
+  checkProductOrders() {
+    this.checkOrders.emit(this.product().id);
+  }
 }

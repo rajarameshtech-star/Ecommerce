@@ -7,6 +7,7 @@
     <span> <mat-icon class="price-icon">sell</mat-icon> $ {{product().price}}</span>
     <span> <mat-icon class="inventory-icon">inventory</mat-icon> {{product().quantity}}</span>
     <span *ngIf="orderedQuantity() > 0"> 
+        <button mat-button color="primary" (click)="checkProductOrders()" ><mat-icon class="edit-icon">eye_open</mat-icon>Check Orders</button>
         <mat-icon class="order-icon">shopping_cart</mat-icon> Ordered Quantity: {{orderedQuantity()}}
     </span>
 </div>

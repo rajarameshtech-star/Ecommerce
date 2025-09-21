@@ -4,12 +4,12 @@ import { CartItem } from '../../models/cart.model';
 
 import { CommonModule } from '@angular/common';
 import { OrdersService } from '../services/orders.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-cart',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css'
 })

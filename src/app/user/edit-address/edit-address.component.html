@@ -1,0 +1,34 @@
+<div class="container mt-5">
+    <h2>{{ addressId ? 'Edit' : 'Add' }} Address</h2>
+    <form [formGroup]="addressForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="vtc" class="form-label">VTC</label>
+        <input type="text" id="vtc" formControlName="vtc" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label for="pin" class="form-label">PIN</label>
+        <input type="number" id="pin" formControlName="pin" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label for="landmark" class="form-label">Landmark</label>
+        <input type="text" id="landmark" formControlName="landmark" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label for="phoneNumber" class="form-label">Phone Number</label>
+        <input type="text" id="phoneNumber" formControlName="phoneNumber" [class.street]="'form-control'">
+      </div>
+      <div class="mb-3">
+        <label for="apartment" class="form-label">Apartment</label>
+        <input type="text" id="apartment" formControlName="apartment" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label for="type" class="form-label">Type</label>
+        <select id="type" formControlName="type" class="form-select">
+          <option value="Home">Home</option>
+          <option value="Work">Work</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="addressForm.invalid">Save Address</button>
+    </form>
+  </div>

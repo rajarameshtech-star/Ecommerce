@@ -1,0 +1,45 @@
+.summary-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.summary-card {
+  background-color: #f4f4f4;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.summary-card h2 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.summary-card p {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.card-pending { border-color: #FFC107; }
+.card-pending:hover { background-color: #FFC107; color: white; }
+
+.card-shipped { border-color: #2196F3; }
+.card-shipped:hover { background-color: #2196F3; color: white; }
+
+.card-delivered { border-color: #4CAF50; }
+.card-delivered:hover { background-color: #4CAF50; color: white; }
+
+.card-out-for-delivery { border-color: #9C27B0; }
+.card-out-for-delivery:hover { background-color: #9C27B0; color: white; }
+
+.card-late-deliveries { border-color: #F44336; }
+.card-late-deliveries:hover { background-color: #F44336; color: white; }
+
+.card-earnings { border-color: #009688; }
+.card-earnings:hover { background-color: #009688; color: white; }
+
+.card-products { border-color: #3F51B5; }
+.card-products:hover { background-color: #3F51B5; color: white; }

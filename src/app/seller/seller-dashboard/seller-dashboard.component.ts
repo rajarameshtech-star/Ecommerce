@@ -11,6 +11,7 @@ import { OrderHubService } from '../../services/order-hub.service';
 
 @Component({
   selector: 'app-seller-dashboard',
+  standalone: true,
   imports: [RouterOutlet, MatButtonModule],
   templateUrl: './seller-dashboard.component.html',
   styleUrl: './seller-dashboard.component.css'

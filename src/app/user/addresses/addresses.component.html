@@ -1,0 +1,25 @@
+<div class="container mt-5">
+    <h2>Select a Shipping Address</h2>
+    <div class="list-group">
+        @for(address of addresses; track address.id) {
+      <a 
+         class="list-group-item list-group-item-action"
+         [class.active]="address.id === selectedAddressId"
+         (click)="selectAddress(address.id ?? '')">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">{{ address.apartment }}, {{ address.vtc }}</h5>
+          <small>
+            <button class="btn btn-sm btn-secondary me-2" (click)="editAddress(address.id ?? '')">Edit</button>
+            <button class="btn btn-sm btn-danger" (click)="deleteAddress(address.id ?? '')">Delete</button>
+          </small>
+        </div>
+        <p class="mb-1">{{ address.landmark }}, {{ address.pin }}</p>
+        <p class="mb-1">{{ address.phoneNumber }}</p>
+      </a>
+    }
+    </div>
+    <div class="mt-3">
+      <button class="btn btn-primary me-2" (click)="addAddress()">Add New Address</button>
+      <button class="btn btn-success" (click)="proceedToPayment()" [disabled]="!selectedAddressId">Proceed to Payment</button>
+    </div>
+  </div>

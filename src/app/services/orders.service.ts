@@ -93,10 +93,15 @@ export class OrdersService {
       pageSize?: number, 
       pageNumber?: number,
       sortBy?: OrderSortEnum,
-      reverse?: boolean
+      reverse?: boolean,
+      productId : string | null
     }
   ) {
     let params = new HttpParams();
+
+    if(data.productId != null) {
+      params = params.append("productId", data.productId);
+    }
 
     if(data.startDate!=undefined && data.startDate!=null) {
       params = params.append("startDate", data.startDate);
@@ -136,7 +141,16 @@ export class OrdersService {
 
   updateOrderStatus(orderId: string, orderStatus: string, paymentStatus: string): Observable<any> {
     const url = `${this.api}/${orderId}`;
-    return this.http.patch(url, { orderStatus, paymentStatus });
+    return this.http.patch(url, { status:orderStatus, paymentStatus });  
+  }
+
+  updatePaymentMethod(orderId: string, paymentData: any): Observable<any> {
+    const url = `${this.api}/cart/${orderId}/payment/method`;
+    return this.http.put(url, paymentData);
+  }
+
+  getSellerSummary(): Observable<{pending: number, shipped: number, delivered: number, outForDelivery: number, lateDeliveries: number, settledEarnings: number, settledEarningsThisMonth: number, settledEarningsThisYear: number, pendingAmount: number, totalProducts: number}> {
+    return this.http.get<{pending: number, shipped: number, delivered: number, outForDelivery: number, lateDeliveries: number, settledEarnings: number, settledEarningsThisMonth: number, settledEarningsThisYear: number, pendingAmount: number, totalProducts: number}>(`${this.api}/seller/summary`);
   }
 
 }

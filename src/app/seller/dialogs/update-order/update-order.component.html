@@ -9,14 +9,14 @@
   <div class="form-fields">
     <mat-form-field appearance="fill">
       <mat-label>Order Status</mat-label>
-      <mat-select [(ngModel)]="updatedOrder.status">
+      <mat-select [(ngModel)]="updatedOrder.status" [disabled]="initialStatus == 'Delivered'">
         <mat-option *ngFor="let status of orderStatuses" [value]="status">{{ status }}</mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Payment Status</mat-label>
-      <mat-select [(ngModel)]="updatedOrder.paymentStatus">
+      <mat-select [(ngModel)]="updatedOrder.paymentStatus" [disabled]="initialPaymentStatus == 'Paid'">
         <mat-option *ngFor="let status of paymentStatuses" [value]="status">{{ status }}</mat-option>
       </mat-select>
     </mat-form-field>

@@ -1,0 +1,32 @@
+<div class="stats-container">
+  <div class="stat-card">
+    <h2>Total Products</h2>
+    <p>{{ products.length }}</p>
+  </div>
+  <div class="stat-card">
+    <h2>Total Pending Orders</h2>
+    <p>{{ totalPendingOrders }}</p>
+  </div>
+</div>
+
+<div class="product-list">
+  <h3>Products with Pending Orders</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Pending Orders</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (product of products; track product.id) {
+        @if (getProductQuantity(product.id) > 0) {
+          <tr>
+            <td>{{ product.productTitle }}</td>
+            <td>{{ getProductQuantity(product.id) }}</td>
+          </tr>
+        }
+      }
+    </tbody>
+  </table>
+</div>

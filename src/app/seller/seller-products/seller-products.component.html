@@ -54,9 +54,14 @@
     }
     <div [ngClass]="view">
         @for( product of filteredProducts(); track $index) {
-        <app-product [product]="product" (delete)="deleteProduct($event)" [selectable]="canSelectMultiple"
-            (edit)="editProduct($event)" (selected)="handleSelection($event)"
-            [orderedQuantity]="quantities[product.id] || 0">
+        <app-product
+          [product]="product"
+          (delete)="deleteProduct($event)"
+          [selectable]="canSelectMultiple"
+          (edit)="editProduct($event)"
+          (selected)="handleSelection($event)"
+          (checkOrders)="checkProductOrders($event)"
+          [orderedQuantity]="quantities[product.id] || 0">
         </app-product>
         }
     </div>

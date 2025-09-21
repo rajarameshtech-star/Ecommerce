@@ -45,7 +45,7 @@
                                 <strong>{{subtotal() | currency}}</strong>
                             </li>
                         </ul>
-                        <button class="btn btn-primary w-100 mt-3" (click)="placeOrder()">Checkout</button>
+                        <button class="btn btn-primary w-100 mt-3" [routerLink]="['/user','addresses']">Select Address</button>
                     </div>
                 </div>
             </div>

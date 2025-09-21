@@ -1,0 +1,42 @@
+<div class="summary-container" *ngIf="summary">
+  <div class="summary-card card-pending" (click)="navigateTo('pending')">
+    <h2>Pending Orders</h2>
+    <p>{{ summary.pending }}</p>
+  </div>
+  <div class="summary-card card-shipped" (click)="navigateTo('shipped')">
+    <h2>Shipped Orders</h2>
+    <p>{{ summary.shipped }}</p>
+  </div>
+  <div class="summary-card card-delivered" (click)="navigateTo('delivered')">
+    <h2>Delivered Orders</h2>
+    <p>{{ summary.delivered }}</p>
+  </div>
+  <div class="summary-card card-out-for-delivery" (click)="navigateTo('outForDelivery')">
+    <h2>Out for Delivery</h2>
+    <p>{{ summary.outForDelivery }}</p>
+  </div>
+  <div class="summary-card card-late-deliveries">
+    <h2>Late Deliveries</h2>
+    <p>{{ summary.lateDeliveries }}</p>
+  </div>
+  <div class="summary-card card-earnings" (click)="navigateTo('settledEarnings')">
+    <h2>Settled Earnings</h2>
+    <p>{{ summary.settledEarnings | number:'1.2-2' }}</p>
+  </div>
+  <div class="summary-card card-earnings" (click)="navigateTo('settledEarningsThisMonth')">
+    <h2>Earnings This Month</h2>
+    <p>{{ summary.settledEarningsThisMonth | number:'1.2-2' }}</p>
+  </div>
+  <div class="summary-card card-earnings" (click)="navigateTo('settledEarningsThisYear')">
+    <h2>Earnings This Year</h2>
+    <p>{{ summary.settledEarningsThisYear | number:'1.2-2' }}</p>
+  </div>
+  <div class="summary-card card-pending" (click)="navigateTo('pendingAmount')">
+    <h2>Pending Amount</h2>
+    <p>{{ summary.pendingAmount | number:'1.2-2' }}</p>
+  </div>
+  <div class="summary-card card-products" (click)="navigateTo('totalProducts')">
+    <h2>Total Products</h2>
+    <p>{{ summary.totalProducts }}</p>
+  </div>
+</div>

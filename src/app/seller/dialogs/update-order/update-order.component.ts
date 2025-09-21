@@ -31,7 +31,8 @@ import { MatDividerModule } from '@angular/material/divider';
 export class UpdateOrderComponent {
   orderStatuses = ORDER_STATUSES;
   paymentStatuses = PAYMENT_STATUSES;
-
+  initialStatus:string;
+  initialPaymentStatus:string;
   updatedOrder: Order;
 
   constructor(
@@ -39,11 +40,14 @@ export class UpdateOrderComponent {
     private ordersService: OrdersService,
     public dialogRef: MatDialogRef<UpdateOrderComponent>
   ) {
+    this.initialStatus = order.status;
+    this.initialPaymentStatus = order.paymentStatus;
     this.updatedOrder = { ...order };
   }
 
   updateOrder() {
     this.ordersService.updateOrderStatus(this.updatedOrder.id, this.updatedOrder.status, this.updatedOrder.paymentStatus).subscribe(() => {
+      alert("updated order successfully");
       this.dialogRef.close(this.updatedOrder);
     });
   }

@@ -228,4 +228,8 @@ export class SellerProductsComponent {
       verticalPosition: 'bottom',
     })
   }
+
+  checkProductOrders(productId:string) {
+    this.router.navigate(["seller","orders"], { queryParams: { productId } });
+  }
 }

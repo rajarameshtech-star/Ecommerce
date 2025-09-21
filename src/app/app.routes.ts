@@ -13,6 +13,10 @@ import { registerAppScopedDispatcher } from '@angular/core/primitives/event-disp
 import { SellerDashboardComponent } from './seller/seller-dashboard/seller-dashboard.component';
 import { SellerProductsComponent } from './seller/seller-products/seller-products.component';
 import { SellerOrdersComponent } from './seller/seller-orders/seller-orders.component';
+import { SellerSummaryComponent } from './seller/seller-dashboard/summary/seller-summary.component';
+import { AddressesComponent } from './user/addresses/addresses.component';
+import { EditAddressComponent } from './user/edit-address/edit-address.component';
+import { PaymentComponent } from './payment/payment.component';
 
 export const routes: Routes = [
     {
@@ -58,6 +62,11 @@ export const routes: Routes = [
         canActivate : [authGuard, sellerGuard, timeoutGuard],
         children : [
             {
+                path : "dashboard",
+                component : SellerSummaryComponent,
+                canActivate : [timeoutGuard]
+            },
+            {
                 path : "products",
                 component : SellerProductsComponent,
                 canActivate : [timeoutGuard]
@@ -68,5 +77,25 @@ export const routes: Routes = [
                 canActivate : [timeoutGuard]
             }
         ]
+     },
+     {
+        path: "user/addresses",
+        component: AddressesComponent,
+        canActivate: [authGuard, userGuard]
+     },
+     {
+        path: "user/addresses/add",
+        component: EditAddressComponent,
+        canActivate: [authGuard, userGuard]
+     },
+     {
+        path: "user/addresses/edit/:id",
+        component: EditAddressComponent,
+        canActivate: [authGuard, userGuard]
+     },
+     {
+        path: "payment/:orderId",
+        component: PaymentComponent,
+        canActivate: [authGuard, userGuard]
      }
 ];
