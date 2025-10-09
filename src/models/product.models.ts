@@ -24,9 +24,9 @@ export interface ProductInfo {
     },
     reviews : {
         id:string;
-        userId :string;
-        productId : string;
+        userName:string;
         rating : number;
-        review :string;
+        reviewText :string;
+        createdAt : string;
     }[]
 }

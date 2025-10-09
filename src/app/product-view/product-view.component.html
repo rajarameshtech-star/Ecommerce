@@ -17,8 +17,8 @@
             @for(review of product?.reviews; track $index){
                 <div class="card mb-3">
                     <div class="card-body">
-                        <h5 class="card-title">Rating: <span [innerHTML]="multiply(review.rating)"></span></h5>
-                        <p class="card-text">{{review.review}}</p>
+                        <h5 class="card-title">{{review.userName}}: <span [innerHTML]="multiply(review.rating)"></span></h5>
+                        <p class="card-text">{{review.reviewText}}</p>
                     </div>
                 </div>
             }

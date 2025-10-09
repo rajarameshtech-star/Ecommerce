@@ -40,8 +40,8 @@ export class UsersService {
     );
   }
 
-  loginUser(loginDetails:loginDto):Observable<{success:boolean, expiresAt:string, jwt: string, roles : string[]}> {
-    return this.http.post<{success:boolean, expiresAt:string, jwt: string, roles : string[]}>(this.apiUrl + "login", loginDetails, this.httpOptions ).pipe(
+  loginUser(loginDetails:loginDto):Observable<{success:boolean, expiresAt:string, token: string, roles : string[], userId : string, email:string}> {
+    return this.http.post<{success:boolean, expiresAt:string, token: string, roles : string[], userId:string, email:string}>(this.apiUrl + "login", loginDetails, this.httpOptions ).pipe(
       tap(response => {
         console.log("User successfully logged in ", response);
         this._role.set( response.roles[0] );

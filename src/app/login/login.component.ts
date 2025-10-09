@@ -21,7 +21,7 @@ export class LoginComponent {
     this.userService.loginUser({email:this.email, password:this.password})
     .subscribe({
       next:(response)=>{
-        localStorage.setItem("jwt", response.jwt);
+        localStorage.setItem("jwt", response.token);
         alert("user logged in successfully");
         if(response.roles[0] == "User")
         this.router.navigate(["products"])
