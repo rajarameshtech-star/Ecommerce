@@ -18,6 +18,8 @@ export class UsersService {
 
   isAuthenticated = this._isAuthenticated.asReadonly();
 
+  private loginInProgress = false; // Flag to track if a login request is in progress
+
   hasToken(): boolean {
     return localStorage.getItem('jwt') !== null;
   }
@@ -40,15 +42,34 @@ export class UsersService {
     );
   }
 
-  loginUser(loginDetails:loginDto):Observable<{success:boolean, expiresAt:string, token: string, roles : string[], userId : string, email:string}> {
-    return this.http.post<{success:boolean, expiresAt:string, token: string, roles : string[], userId:string, email:string}>(this.apiUrl + "login", loginDetails, this.httpOptions ).pipe(
+  loginUser(loginDetails: loginDto): Observable<{ success: boolean, expiresAt: string, token: string, roles: string[], userId: string, email: string }> {
+    if (this.loginInProgress) {
+      console.warn("Login request already in progress. Please wait.");
+      return new Observable(); // Return an empty observable to prevent duplicate requests
+    }
+
+    this.loginInProgress = true; // Set the flag to true when the request starts
+
+    return this.http.post<{ success: boolean, expiresAt: string, token: string, roles: string[], userId: string, email: string }>(
+      this.apiUrl + "login",
+      loginDetails,
+      this.httpOptions
+    ).pipe(
       tap(response => {
         console.log("User successfully logged in ", response);
-        this._role.set( response.roles[0] );
+        this._role.set(response.roles[0]);
         localStorage.setItem("expiresAt", response.expiresAt);
         localStorage.setItem("role", response.roles[0]);
         this._isAuthenticated.set(true);
         this.checkTokenExpiry(response.expiresAt);
+      }),
+      tap({
+        complete: () => {
+          this.loginInProgress = false; // Reset the flag when the request completes
+        },
+        error: () => {
+          this.loginInProgress = false; // Reset the flag if an error occurs
+        }
       })
     );
   }
