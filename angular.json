@@ -33,7 +33,7 @@
               {
                 "glob": "_redirects",
                 "input": "src",
-                "output": "/"
+                "output": "./"
               }
             ],
             "styles": [
@@ -106,7 +106,7 @@
               {
                 "glob": "_redirects",
                 "input": "src",
-                "output": "/"
+                "output": "./"
               }
             ],
             "styles": [
